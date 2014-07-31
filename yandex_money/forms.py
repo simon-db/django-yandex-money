@@ -46,14 +46,14 @@ class BasePaymentForm(forms.Form):
         CPAYMENT = 'paymentAviso'
 
         CHOICES = (
-            (CHECK, 'Проверка заказа'),
-            (CPAYMENT, 'Уведомления о переводе'),
+            (CHECK, u'Проверка заказа'),
+            (CPAYMENT, u'Уведомления о переводе'),
         )
 
     shopId = forms.IntegerField(initial=settings.YANDEX_MONEY_SHOP_ID)
     scid = forms.IntegerField(initial=settings.YANDEX_MONEY_SCID)
     customerNumber = forms.CharField(min_length=1, max_length=64)
-    paymentType = forms.CharField(label='Способ оплаты',
+    paymentType = forms.CharField(label=u'Способ оплаты',
                                   widget=forms.Select(choices=Payment.PAYMENT_TYPE.CHOICES),
                                   min_length=2, max_length=2,
                                   initial=Payment.PAYMENT_TYPE.PC)
@@ -101,10 +101,10 @@ class PaymentForm(BasePaymentForm):
     def get_display_field_names(self):
         return ['paymentType', 'cps_email', 'cps_phone']
 
-    sum = forms.FloatField(label='Сумма заказа')
+    sum = forms.FloatField(label=u'Сумма заказа')
 
-    cps_email = forms.EmailField(label='Email', required=False)
-    cps_phone = forms.CharField(label='Телефон',
+    cps_email = forms.EmailField(label=u'Email', required=False)
+    cps_phone = forms.CharField(label=u'Телефон',
                                 max_length=15, required=False)
 
     shopFailURL = forms.URLField(initial=settings.YANDEX_MONEY_FAIL_URL)
