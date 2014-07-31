@@ -29,10 +29,10 @@ class Payment(models.Model):
         MC = 'mc'
 
         CHOICES = (
-            (PC, 'Яндекс.Деньги'),
-            (AC, 'Банковская карта'),
-            (GP, 'По коду через терминал'),
-            (MC, 'со счета мобильного телефона'),
+            (PC, u'Яндекс.Деньги'),
+            (AC, u'Банковская карта'),
+            (GP, u'По коду через терминал'),
+            (MC, u'со счета мобильного телефона'),
         )
 
     class CURRENCY:
@@ -40,56 +40,56 @@ class Payment(models.Model):
         TEST = 10643
 
         CHOICES = (
-            (RUB, 'Рубли'),
-            (TEST, 'Тестовая валюта'),
+            (RUB, u'Рубли'),
+            (TEST, u'Тестовая валюта'),
         )
 
     user = models.ForeignKey(User, blank=True, null=True,
-                             verbose_name='Пользователь')
-    custome_number = models.CharField('Номер заказа',
+                             verbose_name=u'Пользователь')
+    custome_number = models.CharField(u'Номер заказа',
                                       unique=True, max_length=64,
                                       default=lambda: str(uuid4()).replace('-', ''))
-    status = models.CharField('Результата', max_length=16,
+    status = models.CharField(u'Результат', max_length=16,
                               choices=STATUS.CHOICES,
                               default=STATUS.PROCESSED)
 
-    scid = models.PositiveIntegerField('Номер витрины',
+    scid = models.PositiveIntegerField(u'Номер витрины',
                                        default=settings.YANDEX_MONEY_SCID)
-    shop_id = models.PositiveIntegerField('ID магазина',
+    shop_id = models.PositiveIntegerField(u'ID магазина',
                                           default=settings.YANDEX_MONEY_SHOP_ID)
-    payment_type = models.CharField('Способ платежа', max_length=2,
+    payment_type = models.CharField(u'Способ платежа', max_length=2,
                                     default=PAYMENT_TYPE.PC,
                                     choices=PAYMENT_TYPE.CHOICES)
-    invoice_id = models.PositiveIntegerField('Номер транзакции оператора',
+    invoice_id = models.PositiveIntegerField(u'Номер транзакции оператора',
                                              blank=True, null=True)
-    order_amount = models.FloatField('Сумма заказа')
-    shop_amount = models.DecimalField('Сумма полученная на р/с',
+    order_amount = models.FloatField(u'Сумма заказа')
+    shop_amount = models.DecimalField(u'Сумма полученная на р/с',
                                       max_digits=5,
                                       decimal_places=2,
                                       blank=True, null=True,
-                                      help_text='За вычетом процента оператора')
+                                      help_text=u'За вычетом процента оператора')
 
-    order_currency = models.PositiveIntegerField('Валюта',
+    order_currency = models.PositiveIntegerField(u'Валюта',
                                                  default=CURRENCY.RUB,
                                                  choices=CURRENCY.CHOICES)
-    shop_currency = models.PositiveIntegerField('Валюта полученная на р/с',
+    shop_currency = models.PositiveIntegerField(u'Валюта полученная на р/с',
                                                 blank=True, null=True,
                                                 default=CURRENCY.RUB,
                                                 choices=CURRENCY.CHOICES)
-    payer_code = models.CharField('Номер виртуального счета',
+    payer_code = models.CharField(u'Номер виртуального счета',
                                   max_length=33,
                                   blank=True, null=True)
 
-    success_url = models.URLField('URL успешной оплаты',
+    success_url = models.URLField(u'URL успешной оплаты',
                                   default=settings.YANDEX_MONEY_SUCCESS_URL)
-    fail_url = models.URLField('URL неуспешной оплаты',
+    fail_url = models.URLField(u'URL неуспешной оплаты',
                                default=settings.YANDEX_MONEY_FAIL_URL)
 
-    cps_email = models.EmailField('Почты плательщика', blank=True, null=True)
-    cps_phone = models.CharField('Телефон плательщика', max_length=15, blank=True, null=True)
+    cps_email = models.EmailField(u'Почты плательщика', blank=True, null=True)
+    cps_phone = models.CharField(u'Телефон плательщика', max_length=15, blank=True, null=True)
 
-    pub_date = models.DateTimeField('Время создания', auto_now_add=True)
-    performed_datetime = models.DateTimeField('Выполнение запроса', blank=True, null=True)
+    pub_date = models.DateTimeField(u'Время создания', auto_now_add=True)
+    performed_datetime = models.DateTimeField(u'Выполнение запроса', blank=True, null=True)
 
     @property
     def is_payed(self):
@@ -104,5 +104,5 @@ class Payment(models.Model):
 
     class Meta:
         ordering = ('pub_date',)
-        verbose_name = 'Платеж'
-        verbose_name_plural = 'Платежи'
+        verbose_name = u'Платеж'
+        verbose_name_plural = u'Платежи'
